@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Smartest 8的HiDL：part 1"
+title:      "Smartest 8的HiDL：Part 1"
 subtitle:   "SMT8平台下HiDigitalLink库的内容"
 date:       2025-9-11
 author:     "Windyeal"
