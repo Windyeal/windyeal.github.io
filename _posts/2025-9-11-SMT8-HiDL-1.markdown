@@ -37,7 +37,8 @@ suite HDL_Config calls HiDigitalLinkV2.HiDigitalLinkConfig {
 测试项参数GlobalExeSequenceList用于配置全局的ExeSequenceList
 测试项参数GlobalPrePostParameters用于配置全局的PrePostExecute
 
-<font color =blue>使用全局通用配置suite需要注意：
+<font color =blue>
+使用全局通用配置suite需要注意：
 1.该suite只需在TestFlow的setup部分定义既可，无需在execute部分调用execute方法
 2.该suite一般只建一个如果建多个suite则只生效最后一个suite中的配置，其余均无效
 3.debug模式下修改此suite参数不会立即生效，退出debug模式后下次运行生效
@@ -53,26 +54,26 @@ HiDigitalLinkV2的测试项可以将Vmm、Shmoo、PinMargin等模块放到同一
 2.可以控制执行或不执行哪些模块(相当于全局控制所有HDLV2的suite哪些模块执行或不执行的flag)
 
 **使用了HiDigitalLinkV2.BasicMethod的suite执行相关说明如下**
-**<font color =coral>suite只配置一个主模块:</font>**
+**<font color =coral> suite只配置一个主模块: </font>**
 GlobalExeSequenceList和ExeSequenceList都无效，测试项必定执行配置的主模块
 
-**<font color =coral>suite配置多个主模块且程序中配置了GlobalExeSequenceList:</font>**
+**<font color =coral> suite配置多个主模块且程序中配置了GlobalExeSequenceList:</font>**
 1.suite如果使用了ExeSequenceList则GlobalExeSequenceList无效，并且ExeSequenceList中的元素必须是当前suite的parameterGroup的key，否则会报错
 2.suite没有使用ExeSequenceList时，以GlobalExeSequenceList为主，GlobalExeSequenceList中的元素会去和每个测试项中HDL主模块的parameterGroup的key依次匹配，如果至少有一个能匹配到则运行匹配到的模块，如果全都没有匹配到，则按默认顺序执行
 3.某些特殊的suite不想受到GlobalExeSequenceList的控制，但是其ParameterGroup的key却能与之匹配，此时可以修改ParameterGroup的key或者将suite参数UsingGlobalExeSequenceList设置为false
 
-**<font color =coral>suite配置多个主模块但程序中没有配置GlobalExeSequenceList:</font>**
+**<font color =coral> suite配置多个主模块但程序中没有配置GlobalExeSequenceList:</font>**
 1.suite如果使用ExeSequenceList则ExeSequenceList中的元素必须是当前suite的parameterGroup的key，否则会报错
 2.suite没有使用ExeSequenceList时按默认顺序执行
 
-<font color =blueviolet>*提示：*
+<font color =blueviolet> *提示：*
 *1.程序中配置了GlobalExeSequenceList是指使用了HiDigitalLinkV2.HiDigitalLinkConfig作为TestMethod的测试项，并指定了GlobalExeSequenceList的值，未使用测试项或未指定值都视为没有配置*
 *2.主模块是指Funtional、HiFunctional、Shmoo、SpecSearch、VminVmax、FminFmax、PinMargin，配置了对应的parameterGroup视为配置了该模块*
 *3.默认顺序为：Func -> HiFunc -> SpecSearch -> Vmm -> Fmm -> PinMargin -> Shmoo，没有配置的模块跳过执行*</font>
 
 ### GlobalPrePostParameters说明
 
-如果HiDigitalLinkV2.HiDigitalLinkConfig作为TestMethod的suite中配置了参数GlobalPrePostParameters那么其作用和在单个suite中配置了参数PrePostParameters一样，系统会根据preAllList、postAllList、preCellList、postCellList这四个List中的元素去匹配对应的key，从而执行PrePost功能。当然，<font color =red>如果suite中配置的PrePostParameters的key和GlobalPrePostParameters的key是相同的，则以suite的PrePostParameters配置为主</font>
+如果HiDigitalLinkV2.HiDigitalLinkConfig作为TestMethod的suite中配置了参数GlobalPrePostParameters那么其作用和在单个suite中配置了参数PrePostParameters一样，系统会根据preAllList、postAllList、preCellList、postCellList这四个List中的元素去匹配对应的key，从而执行PrePost功能。当然，<font color =red> 如果suite中配置的PrePostParameters的key和GlobalPrePostParameters的key是相同的，则以suite的PrePostParameters配置为主</font>
 
 <span id = "jump_GlobalLogFileType">
 
@@ -81,7 +82,8 @@ GlobalExeSequenceList和ExeSequenceList都无效，测试项必定执行配置�
 用户可以在HiDigitalLinkV2.HiDigitalLinkConfig作为TestMethod的suite中配置参数GlobalLogFileType
 
 HiDigitalLink可以根据用户配置将测试数据输出到文件中
-<font color =blueviolet>GlobalLogFileType = Integrate时，所有site的数据会输出到同一个文件中
+<font color =blueviolet>
+GlobalLogFileType = Integrate时，所有site的数据会输出到同一个文件中
 GlobalLogFileType = Decollate时，不同site的数据会输出到不同的文件中</font>
 GlobalLogFileType参数默认值为Integrate，用户不定义时用默认值
 </span>
@@ -92,7 +94,7 @@ HDL的Diagnosis模块的测试log包含了每个pin的FailcycleNumber以及向�
 
 HDL融合了新的查找方式，并且保留了原始的查找方式，用户可以通过将HiDigitalLinkV2.HiDigitalLinkConfig的测试项参数UseDiagFastResultMode设置为ture(默认为false)来使用新的查找方式
 
-<font color =red>新的查找方式不通过遍历向量来获取期望值，因而获取的信息是有限的，所以UseDiagFastResultMode设置为ture时需要满足下列条件，否则收的数据可能有bug：</font>
+<font color =red> 新的查找方式不通过遍历向量来获取期望值，因而获取的信息是有限的，所以UseDiagFastResultMode设置为ture时需要满足下列条件，否则收的数据可能有bug：</font>
 
     1.向量中只比较H或L，如果有M等比较，则无法使用新API，X不影响
     2.wavetable中的H只能对应采样动作H，L只能对应采样动作L
@@ -100,9 +102,10 @@ HDL融合了新的查找方式，并且保留了原始的查找方式，用户�
     4.VOH=VOL且芯片输出电压也等于VOH和VOL时不能使用新API，当芯片无输出时，VT=VOH=VOL时也不能使用新API
     5.PSMLS(PSML)版本，不能使用新API
 
-<font color =blue>UseDiagFastResultMode使用建议：
+<font color =blue>
+UseDiagFastResultMode使用建议：
 1.对测试时间无要求或Diagnosis测试本身花费时间较少时，UseDiagFastResultMode设置为false
-2.向量是千万行级别的或者大向量运行VMMDiag、ShmooDiag时，满足UseDiagFastResultMode设置为ture的条件则可以将其设置为true</font>
+2.向量是千万行级别的或者大向量运行VMMDiag、ShmooDiag时，满足UseDiagFastResultMode设置为ture的条件则可以将其设置为true </font>
 
 ------------
 
@@ -140,7 +143,8 @@ HiDigitalLink会将测试数据存储到STDF中，可以右击TestProgram在Run 
 
 在HiDigitalLink的Functional、HiFunctional、SpecSearch、VminVmax、FminFmax、Shmoo、PinMargin、Diagnosis、PowerMonitor这些模块对应的ParameterGroup中里都有这个参数，DiagnoisParameters中默认值为FILE，其他ParameterGroup中默认值为FILE_REPORTUI
 
-<font color =FireBrick>output控制的只是当前模块log数据的输出，各模块互相独立，并且和STDF数据也无关。STDF只要配置则必定输出，因此只收集STDF数据而不关注log数据时，可以将output设置为NONE</font>
+<font color =FireBrick>
+output控制的只是当前模块log数据的输出，各模块互相独立，并且和STDF数据也无关。STDF只要配置则必定输出，因此只收集STDF数据而不关注log数据时，可以将output设置为NONE</font>
 
 **<font color =blue>logFileName</font>** ：String类型，默认值为: \<device目录>/report/HiDigitalLink
 
@@ -191,6 +195,7 @@ loadAndRestor操作：右击TestProgram -> 选择点击 Load and Restore
 * 当前HDLV2中只有Functional、HiFunctional、PowerMonitor模块支持用户自己配置TestDescriptor属性，这三个模块的TestDescriptor对象都定义在了其模块对应的ParameterGroup中，因而ParameterGroup中可以设置TestDescriptor对象的属性，而大多数情况下则是在TestTable中设置
 
 HDLV2中的TestDescriptor对象如下表，每个Descritpor对象都可以配置limit和bin等属性
+
 |所属模块|所属ParameterGroup名称|类型|Descriptor对象名称|
 |----|----|----|----|
 |Functional|FuncParameters|IFunctionalTestDescriptor|<font color =blue>FcTestDescriptor</font>|
@@ -249,6 +254,7 @@ ByCycle模式，是部分Signal(pin)的部分cycle的PassFail代表不同die的�
 
 **ByCycle模式ParameterGroup参数解释**
 测试项需要用到DieCycleParameters这个ParameterGroup指定CSV的路径等参数，不指定的参数时使用默认值
+
 |参数名称|参数类型|参数默认值|参数介绍|
 |----|----|----|----|
 |inputCSV|String|resource/CCT_block.csv|ByCycle模式的部分配置在CSV里面，此参数用于指定CSV的路径和名称，'/'开个头为绝对路径，非'/'开头为当前DeviceProject目录下的相对路径
@@ -287,6 +293,7 @@ MemoryDiag用于执行MemoryDiag向量，并抓取failcycle
 Diag模块相关的参数在DiagnosisParameters中配置，<font color =FireBrick>每个测试项只能配置一个DiagnosisParameters</font>
 
 **NormalDiag相关参数**
+
 |参数名称|参数类型|参数默认值|参数介绍|
 |----|----|----|----|
 |diagType|enum|DETAIL|用于控制Search/VMM/FMM、Shmoo出现HardFail时，Margin点的计算数量，可选DETAIL、STANDARD、SIMPLE，选STANDARD时，HardFail时执行一个中心点的Diag、非STANDARD时会以中心点向外扩散多扫一些点的Diag|
@@ -300,6 +307,7 @@ Diag模块相关的参数在DiagnosisParameters中配置，<font color =FireBric
 
 **MemoryDiag特有参数**
 如果测试要执行MemoryDiag则除了要指定上面NormalDiag相关参数外还需要指定下列MemoryDiag相关参数，所有MemoryDiag特有参数都是以Memory开头以便区分前面参数
+
 |参数名称|参数类型|参数默认值|参数介绍|
 |----|----|----|----|
 |MemoryCSVPathAndNeme|String|"resource/diag_memory.csv"|用于指定MemooryDiag功能要用的csv路径，'/'开个头为绝对路径，非'/'开头为当前DeviceProject目录下的相对路径
@@ -308,6 +316,7 @@ Diag模块相关的参数在DiagnosisParameters中配置，<font color =FireBric
 |MemorySone|int|50|用于指定SONE(loop)次数|
 
 **log相关参数**
+
 |参数名称|参数类型|参数默认值|参数介绍|
 |----|----|----|----|
 |[output]|enum|FILE_REPORTUI|用于控制log输出，可选FILE、REPORTUI、FILE_REPORTUI、NONE|
@@ -500,6 +509,7 @@ Functional模式的FunctionTest结果会保存到STDF中，对用户来说没有
 ### 资源获取与配置
 HiDigitalLinkV2我们以jar包的形式提供给用户，jar包适用于Smartest8.4.4以上的所有Smartest版本
 点击下表中的蓝色字体获取对应版本的jar包(当前1.0Beta3版本兼容前两个版本)
+
 |HDL版本号|jar包名称|简介|
 |----|----|----|
 |1.0Beta||初版代码，供用户使用和反馈意见|
@@ -595,6 +605,7 @@ HiFunctional模块一般用于调试，此模块可以根据用于配置的参�
 <span id = "jump_HiFCparameters">
 
 #### HiFuncParameters参数
+
 |参数名称|参数类型|参数默认值|参数介绍|
 |----|----|----|----|
 |[log_per_pin](#jump_hifuncResultType)|boolean|false|用于控制是否要打印PerPin的PassFail结果到STDF和log数据|
